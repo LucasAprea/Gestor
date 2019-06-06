@@ -1,7 +1,5 @@
 package PCT;
 
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
@@ -17,9 +15,7 @@ import java.awt.Font;
 
 public class Consultar {
 
-	private JFrame frmConsultarTelefono;
-	private Telefono[] telefonos;
-	private ArrayList<Telefono> t;
+	private JFrame frmConsultar;
 	private Choice choice;
 	private JCheckBox mostrarClave;
 	private JTextPane detalle;
@@ -27,24 +23,20 @@ public class Consultar {
 	private JScrollPane scrollPane;
 	private JButton btnBorrar;
 	
-	private Main m;
-	
-	public Consultar(ArrayList<Telefono> tel, Main m) {
+	public Consultar() {
 		initialize();
-		this.m = m;
-		t = tel;
 		Listar();
-		frmConsultarTelefono.setVisible(true);
+		frmConsultar.setVisible(true);
 	}
 		
 	private void initialize() {
-		frmConsultarTelefono = new JFrame();
-		frmConsultarTelefono.setTitle("Consultar");
-		frmConsultarTelefono.setBounds(100, 100, 500, 600);
-		frmConsultarTelefono.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmConsultar = new JFrame();
+		frmConsultar.setTitle("Consultar");
+		frmConsultar.setBounds(100, 100, 500, 600);
+		frmConsultar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
-		frmConsultarTelefono.getContentPane().add(panel, BorderLayout.CENTER);
+		frmConsultar.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
 		choice = new Choice();
@@ -55,7 +47,7 @@ public class Consultar {
 		label.setBounds(25, 10, 70, 24);
 		panel.add(label);
 		
-		mostrarClave = new JCheckBox("Mostrar Contrase\u00F1a");
+		mostrarClave = new JCheckBox("Mostrar Contraseña");
 		mostrarClave.setBounds(8, 43, 144, 25);
 		panel.add(mostrarClave);
 		
@@ -97,36 +89,30 @@ public class Consultar {
 		btnBorrar.setBounds(269, 43, 97, 25);
 		panel.add(btnBorrar);
 	}
+	
 	private void Listar() {
 		choice.removeAll();
-		if(!t.isEmpty()) {
-			Object[] aux = t.toArray();
-			telefonos = new Telefono[aux.length];
-			if(aux != null) {
-				for(int i=0; aux.length>i;i++) {
-					Telefono temp = (Telefono)aux[i];
-					telefonos[i] = temp;
-					choice.add(temp.getNumero());
-				}
-			}
+		String[] telefonos = Conector.getTelefonos();
+		for(int i=0; telefonos.length>i;i++) {
+			choice.add(telefonos[i]);	
 		}
-		
 	}
+	
 	private void actualizar() {
 		int index = choice.getSelectedIndex();
-		new Actualizar(telefonos[index],m,this);
+		new Actualizar(index,this);
 	}
 	void getDatos() {
 		int index = choice.getSelectedIndex();
 		if(index != -1) {
-			Telefono aux = telefonos[index];
-			detalle.setText(aux.toString(mostrarClave.isSelected()));
+			String texto = Conector.detalles(index,mostrarClave.isSelected());
+			detalle.setText(texto);
 		}
 	}
 	
 	private void eliminar() {	
 		
-		t.remove(choice.getSelectedIndex());
+		Conector.eliminar(choice.getSelectedIndex());
 		Listar();
 	}
 }

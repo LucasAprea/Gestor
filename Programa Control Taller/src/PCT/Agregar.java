@@ -11,33 +11,30 @@ import java.awt.event.MouseEvent;
 
 public class Agregar {
 
-	private JFrame frmAgregarTelefono;
-	private Telefono tel;
+	private JFrame frmAgregar;
 	private JTextField dueno;
 	private JTextField contrasena;
 	private JTextField comentarios;
 	private JTextField numero;
-	private Main m;
 	private JTextField modelo;
 	
-	public Agregar(Main m) {
-		initialize();
-		this.m = m;
-	}
+	public Agregar() {
+			initialize();
+		}
 	
 	private void initialize() {
-		frmAgregarTelefono = new JFrame();
-		frmAgregarTelefono.setTitle("Agregar Telefono");
-		frmAgregarTelefono.setBounds(100, 100, 450, 383);
-		frmAgregarTelefono.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmAgregar = new JFrame();
+		frmAgregar.setTitle(Conector.getTitle(1));
+		frmAgregar.setBounds(100, 100, 450, 383);
+		frmAgregar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		try {	
-			frmAgregarTelefono.setVisible(true);
+			frmAgregar.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		JPanel panel = new JPanel();
-		frmAgregarTelefono.getContentPane().add(panel, BorderLayout.CENTER);
+		frmAgregar.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
 		dueno = new JTextField();
@@ -60,11 +57,11 @@ public class Agregar {
 		panel.add(numero);
 		numero.setColumns(10);
 		
-		JLabel lblDueo = new JLabel("Due\u00F1o");
+		JLabel lblDueo = new JLabel("Dueño");
 		lblDueo.setBounds(12, 34, 56, 16);
 		panel.add(lblDueo);
 		
-		JLabel lblNewLabel = new JLabel("Contrase\u00F1a");
+		JLabel lblNewLabel = new JLabel("Contraseña");
 		lblNewLabel.setBounds(12, 69, 76, 16);
 		panel.add(lblNewLabel);
 		
@@ -80,9 +77,8 @@ public class Agregar {
 		btnAgregar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				tel = new Telefono(dueno.getText(),modelo.getText(), contrasena.getText(),comentarios.getText(),numero.getText());
-				m.CargarTelefono(tel);
-				frmAgregarTelefono.dispose();
+				Conector.agregar(dueno.getText(),modelo.getText(), contrasena.getText(),comentarios.getText(),numero.getText());
+				frmAgregar.dispose();
 			}
 		});
 		btnAgregar.setBounds(323, 298, 97, 25);
@@ -92,7 +88,7 @@ public class Agregar {
 		btnCancelar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				frmAgregarTelefono.dispose();
+				frmAgregar.dispose();
 			}
 		});
 		btnCancelar.setBounds(12, 298, 97, 25);

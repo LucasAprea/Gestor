@@ -12,60 +12,72 @@ import javax.swing.JTextPane;
 
 public class Actualizar {
 
-	private JFrame frmActualizarTelefono;
-	private JTextField dueno;
-	private JTextField contrasena;
-	private JTextField numero;
-	private JTextField modelo;
-	private JLabel lblContrasea;
-	private JLabel lblNumero;
-	private JLabel lblModelo;
-	private JTextField observaciones;
-	private JLabel lblObservaciones;
-	private JButton btnIncrementarEstado;
-	private JButton btnActualizarPrecio;
-	private JButton btnNewButton;
-	private Main main;
-	private Telefono t;
+	private JFrame frmActualizar;
 	private JTextPane control;
 	private Consultar ct;
 	
-	public Actualizar(Telefono t, Main m, Consultar tel) {
+	//Cambiantes:
+	private int index;
+	
+	private JTextField dueno;
+	
+	private JLabel lblContrasea;
+	private JTextField contrasena;
+	
+	private JTextField numero;
+	private JLabel lblNumero;
+	
+	private JLabel lblModelo;
+	private JTextField modelo;
+	
+	private JLabel lblObservaciones;
+	private JTextField observaciones;
+	
+	private JButton btnIncrementarEstado;
+	
+	private JButton btnActualizarPrecio;
+	
+	private JButton btnSave;
+
+	
+	public Actualizar(int i, Consultar tel) {
 		initialize();
-		this.t = t;
-		main = m;
 		ct = tel;
-		colocarContenido(this.t);
-		frmActualizarTelefono.setVisible(true);
+		this.index = i;
+		colocarContenido();
+		frmActualizar.setVisible(true);
 	}
-	private void colocarContenido(Telefono t) {
-		dueno.setText(t.dueno);
-		contrasena.setText(t.contrasena);
-		numero.setText(t.numero);
-		modelo.setText(t.modelo);
+	private void colocarContenido() {
+		String[]datos = Conector.getContenido(index);
+		dueno.setText(datos[0]);
+		contrasena.setText(datos[1]);
+		numero.setText(datos[2]);
+		modelo.setText(datos[3]);
 	}
 	private void GuardarDatos() {
-		t.dueno = dueno.getText();
-		t.contrasena = contrasena.getText();
-		t.modelo = modelo.getText();
-		t.numero = numero.getText();
-		t.setObeservaciones(observaciones.getText());
+		String[] datos = new String[5];
+		datos[0] = dueno.getText();
+		datos[1] = contrasena.getText();
+		datos[2] = modelo.getText();
+		datos[3] = numero.getText();
+		datos[4] = observaciones.getText();
+		Conector.actualizarDatos(index,datos);
 		ct.getDatos();
-		frmActualizarTelefono.dispose();
+		frmActualizar.dispose();
 	}
 	private void incrementarEstado() {
-		t.incrementarEstado();
-		control.setText("Se Incremento el Estado \nValor Actual: " + Telefono.estados[t.estado]);
+		Conector.incrementar(index);
+		control.setText("Se Incremento el Estado \nValor Actual: " + Conector.getEstadoActual(index));
 	}
 	private void initialize() {
 		Math.abs(5);
-		frmActualizarTelefono = new JFrame();
-		frmActualizarTelefono.setTitle("Actualizar Telefono");
-		frmActualizarTelefono.setBounds(100, 100, 598, 298);
-		frmActualizarTelefono.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frmActualizar = new JFrame();
+		frmActualizar.setTitle("Actualizar Telefono");
+		frmActualizar.setBounds(100, 100, 598, 298);
+		frmActualizar.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		JPanel panel = new JPanel();
-		frmActualizarTelefono.getContentPane().add(panel, BorderLayout.CENTER);
+		frmActualizar.getContentPane().add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
 		dueno = new JTextField();
@@ -118,7 +130,7 @@ public class Actualizar {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				incrementarEstado();
-				main.Revision();
+				Conector.revision();
 				ct.getDatos();
 			}
 		});
@@ -127,18 +139,24 @@ public class Actualizar {
 		
 		btnActualizarPrecio = new JButton("Actualizar Precio");
 		btnActualizarPrecio.setBounds(181, 205, 157, 25);
+		btnActualizarPrecio.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				new ActualizarPrecio(index);
+			}
+		});
 		panel.add(btnActualizarPrecio);
 		
-		btnNewButton = new JButton("Guardar");
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		btnSave = new JButton("Guardar");
+		btnSave.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				Actualizar.this.GuardarDatos();
-				main.Revision();
+				Conector.revision();
 			}
 		});
-		btnNewButton.setBounds(12, 167, 157, 25);
-		panel.add(btnNewButton);
+		btnSave.setBounds(12, 167, 157, 25);
+		panel.add(btnSave);
 		
 		control = new JTextPane();
 		control.setBounds(346, 153, 222, 85);

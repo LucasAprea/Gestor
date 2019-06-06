@@ -10,18 +10,18 @@ import java.awt.event.MouseEvent;
 public class ActualizarPrecio {
 
 	private JFrame frame;
-	private JTextField textField;
-	private Telefono tel;
+	private JTextField valor;
+	private int index;
 
-	public ActualizarPrecio(Telefono t) {
+	public ActualizarPrecio(int index) {
 		initialize();
-		tel = t;
+		this.index = index;
 		frame.setVisible(true);
 	}
 
 	private void Guardar() {
-		if(textField.getText() != "") {
-			tel.valorArreglo = Double.parseDouble(textField.getText());
+		if(valor.getText() != "") {
+			Conector.setValor(index,valor.getText());
 		}
 	}
 	
@@ -35,10 +35,10 @@ public class ActualizarPrecio {
 		lblPrecioNuevo.setBounds(12, 13, 98, 16);
 		frame.getContentPane().add(lblPrecioNuevo);
 		
-		textField = new JTextField();
-		textField.setBounds(111, 10, 186, 22);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		valor = new JTextField();
+		valor.setBounds(111, 10, 186, 22);
+		frame.getContentPane().add(valor);
+		valor.setColumns(10);
 		
 		JButton btnAceptar = new JButton("Aceptar");
 		btnAceptar.addMouseListener(new MouseAdapter() {
