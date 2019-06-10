@@ -40,7 +40,7 @@ public class Consultar {
 		panel.setLayout(null);
 		
 		choice = new Choice();
-		choice.setBounds(101, 10, 369, 22);
+		choice.setBounds(101, 10, 265, 22);
 		panel.add(choice);
 		
 		Label label = new Label("Numero ");
@@ -88,6 +88,16 @@ public class Consultar {
 		});
 		btnBorrar.setBounds(269, 43, 97, 25);
 		panel.add(btnBorrar);
+		
+		JButton btnRefrescar = new JButton("Refrescar");
+		btnRefrescar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Listar();
+			}
+		});
+		btnRefrescar.setBounds(373, 10, 97, 25);
+		panel.add(btnRefrescar);
 	}
 	
 	private void Listar() {

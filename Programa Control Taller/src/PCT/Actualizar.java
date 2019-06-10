@@ -51,8 +51,8 @@ public class Actualizar {
 		String[]datos = Conector.getContenido(index);
 		dueno.setText(datos[0]);
 		contrasena.setText(datos[1]);
-		numero.setText(datos[2]);
-		modelo.setText(datos[3]);
+		modelo.setText(datos[2]);
+		numero.setText(datos[3]);
 	}
 	private void GuardarDatos() {
 		String[] datos = new String[5];
